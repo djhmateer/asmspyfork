@@ -44,14 +44,14 @@ namespace AsmSpy
             Console.WriteLine(directoryInfo.FullName);
             Console.WriteLine();
 
-            // Creating a Dictionary of assembly (each file is 1 assembly) names, and a List of its referenced Assemblies
+            // Creating a Dictionary of assembly (each file is 1 assembly) names, and a List of it's referenced Assemblies
             var assemblies = new Dictionary<string, IList<ReferencedAssembly>>();
             foreach (var fileInfo in assemblyFiles.OrderBy(asm => asm.Name))
             {
                 Assembly assembly;
                 try
                 {
-                    // FileInfo extension method in Native folder.  Why/when needed?
+                    // FileInfo extension method in Native folder.  Under what scenarios needed? Why?
                     if (!fileInfo.IsAssembly()) continue;
                     assembly = Assembly.ReflectionOnlyLoadFrom(fileInfo.FullName);
                 }
@@ -74,12 +74,10 @@ namespace AsmSpy
             if (onlyConflicts)
                 Console.WriteLine("Detailing only conflicting assembly references.");
 
-            // Look at each assembly, 
             foreach (var assembly in assemblies)
             {
                 if (skipSystem && (assembly.Key.StartsWith("System") || assembly.Key.StartsWith("mscorlib"))) continue;
 
-                // hmm, change the bools to be positive?
                 // like a sql statement - if not onlyConflicts then ok
                 if (!onlyConflicts
                     //|| (onlyConflicts && assembly.Value.GroupBy(x => x.VersionReferenced).Count() != 1))
@@ -131,8 +129,7 @@ namespace AsmSpy
         }
 
         // create array of ConsoleColor's.. only used above to get versionColor
-        static readonly ConsoleColor[] ConsoleColors = new ConsoleColor[]
-            {
+        static readonly ConsoleColor[] ConsoleColors = {
                 ConsoleColor.Green,
                 ConsoleColor.Red,
                 ConsoleColor.Yellow,
@@ -158,7 +155,6 @@ namespace AsmSpy
 
     public class ReferencedAssembly
     {
-        // Private set is implicit?
         public Version VersionReferenced { get; }
         public Assembly ReferencedBy { get; }
 
